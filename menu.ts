@@ -41,10 +41,21 @@ namespace blockMenu {
 
         //aqee
         protected gridCol=4
+
         setGridCol(col:number){
             if(col<2)col=2
             this.gridCol=col
+            this.recreateLabels();
         }
+
+        protected iconPadding=1
+        protected icons:Image[]=null
+        
+        setIcons(icons:Image[]){
+            this.icons=icons
+            this.recreateLabels();
+        }
+        //end
 
         setOptions(options: string[]) {
             this.options = options.slice();
@@ -204,7 +215,7 @@ namespace blockMenu {
 
         protected getMaxLabelWidth() {
             if (this.style === MenuStyle.Grid) {
-                return (this.metrics.width - this.padding) / this.gridCol - this.padding;
+                return Math.idiv((this.metrics.width - this.padding) , this.gridCol) - this.padding;
             }
             return this.metrics.width - (this.padding << 1);
         }
@@ -215,8 +226,9 @@ namespace blockMenu {
 
             const labelWidth = this.getMaxLabelWidth();
 
-            for (const option of this.options) {
-                this.labels.push(new ScrollingLabel(option, labelWidth));
+            for (let i=0;i<this.options.length;i++) {
+                const option=this.options[i]
+                this.labels.push(new ScrollingLabel(option, labelWidth, (this.icons&&this.icons[i])?this.icons[i]:null));
             }
 
             this.setSelectedIndex(this.selectedMenuIndex())
@@ -228,20 +240,23 @@ namespace blockMenu {
             let top = this.metrics.top + this.padding;
             let left = this.metrics.left + this.padding;
 
+            let maxItemHeight=0
             for (let i = 0; i < this.labels.length; i++) {
                 current = this.labels[i];
 
                 if (i === this.selectedIndex) {
-                    screen.fillRect(left - 1, top - 1, current.width + 2, current.font.charHeight + 2, this.cursorBackground);
+                    screen.fillRect(left - 1, top - 1, current.width + 2, current.height + 2, this.cursorBackground);
                     current.draw(left, top, this.cursorForeground);
                 }
                 else {
                     current.draw(left, top, this.foreground);
                 }
 
+                maxItemHeight= Math.max(current.height, maxItemHeight)
                 if ((i+1) % this.gridCol === 0) {
                     left = this.metrics.left + this.padding;
-                    top += current.font.charHeight + this.padding;
+                    top += maxItemHeight + this.padding;
+                    maxItemHeight=0
                 }
                 else {
                     left += current.width + this.padding;
@@ -283,7 +298,12 @@ namespace blockMenu {
         public font: image.Font;
         public partialCanvas: Image;
 
-        constructor(public text: string, maxWidth: number) {
+        //Aqee
+        public height:number
+        protected iconPadding = 1
+        protected icon: Image = null
+
+        constructor(public text: string, maxWidth: number, icon?:Image) {
             this.scrolling = false;
 
             this.pauseTime = 1000;
@@ -293,6 +313,15 @@ namespace blockMenu {
             this.width = maxWidth;
 
             this.font = image.getFontForText(this.text);
+            this.height=this.font.charHeight
+            
+            //aqee
+            // this.icon = sprites.builtin.forestTiles0
+            this.icon=icon
+            if(this.icon){
+                maxWidth=Math.max(0,maxWidth- this.icon.width)
+                this.height=Math.max(this.icon.height, this.font.charHeight)
+            }
 
             const fullLength = this.text.length * this.font.charWidth;
             this.maxCharacters = Math.idiv(maxWidth, this.font.charWidth);
@@ -309,6 +338,12 @@ namespace blockMenu {
         }
 
         draw(left: number, top: number, color: number) {
+            //aqee
+            if(this.icon){
+                screen.drawImage(this.icon, left + this.iconPadding,top)
+                left += this.icon.width + this.iconPadding*2
+            }
+
             const startIndex = Math.idiv(this.offset, this.font.charWidth);
             const letterOffset = startIndex * this.font.charWidth - this.offset;
 
