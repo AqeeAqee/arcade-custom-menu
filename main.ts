@@ -16,11 +16,11 @@ function showMenu1(){
     blockMenu.setIcons([
         sprites.builtin.forestTiles1,
         sprites.builtin.forestTiles2,
-        null, //sprites.builtin.forestTiles3,
-        null, //sprites.builtin.forestTiles4,
+        sprites.builtin.forestTiles3,
+        sprites.builtin.forestTiles4,
         sprites.builtin.forestTiles5,
         null, //sprites.builtin.forestTiles6,
-        null, //sprites.builtin.forestTiles7,
+        sprites.builtin.forestTiles7,
     ])
 }
 function showMenu2() {
@@ -33,16 +33,14 @@ function showMenu2() {
         "6",
         "7",
     ], MenuStyle.Grid, MenuLocation.FullScreen)
-    blockMenu.setGridColumn(3)
+    blockMenu.setGridColumn(4)
 
     blockMenu.setIcons([
         sprites.projectile.star1,
+        sprites.projectile.star2,
         sprites.projectile.heart1,
-        null, //sprites.builtin.forestTiles3,
-        null, //sprites.builtin.forestTiles4,
+        sprites.projectile.heart3,
         sprites.projectile.drop1,
-        null, //sprites.builtin.forestTiles6,
-        null, //sprites.builtin.forestTiles7,
     ])
 }
 
@@ -65,3 +63,5 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, () => {
     else
         showMenu1()
 })
+
+game.splash("Press B to open menu")

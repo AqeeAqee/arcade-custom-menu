@@ -39,12 +39,11 @@ namespace blockMenu {
             this.padding = 2;
         }
 
-        //aqee
         protected gridCol=1
 
         setGridCol(col:number){
             if(this.style==MenuStyle.Grid&&col!=this.gridCol){
-                this.gridCol= Math.min(2, col)
+                this.gridCol= Math.max(2, col)
                 this.recreateLabels();
             }
         }
@@ -56,7 +55,6 @@ namespace blockMenu {
             this.icons=icons
             this.recreateLabels();
         }
-        //end
 
         setOptions(options: string[]) {
             this.options = options.slice();
@@ -299,7 +297,6 @@ namespace blockMenu {
         public font: image.Font;
         public partialCanvas: Image;
 
-        //Aqee
         public height:number
         protected iconPadding = 1
         protected icon: Image = null
@@ -316,8 +313,6 @@ namespace blockMenu {
             this.font = image.getFontForText(this.text);
             this.height=this.font.charHeight
             
-            //aqee
-            // this.icon = sprites.builtin.forestTiles0
             this.icon=icon
             if(this.icon){
                 maxWidth=Math.max(0,maxWidth- this.icon.width)
@@ -339,7 +334,6 @@ namespace blockMenu {
         }
 
         draw(left: number, top: number, color: number) {
-            //aqee
             if(this.icon){
                 screen.drawTransparentImage(this.icon, left + this.iconPadding,top)
                 left += this.icon.width + this.iconPadding*2

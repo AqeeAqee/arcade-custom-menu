@@ -30,7 +30,6 @@ enum MenuStyle {
 
 namespace blockMenu {
 
-    //aqee
     export function setIcons(icons: Image[]) {
         const state = _getState();
         state.menu.setIcons(icons)
@@ -40,8 +39,6 @@ namespace blockMenu {
         const state = _getState();
         state.menu.setGridCol(col)
     }
-
-    //end
 
     //% blockId="block_menu_show_menu"
     //% block="show $style menu at $location with options $options"
