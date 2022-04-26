@@ -39,6 +39,13 @@ namespace blockMenu {
             this.padding = 2;
         }
 
+        //aqee
+        protected gridCol=4
+        setGridCol(col:number){
+            if(col<2)col=2
+            this.gridCol=col
+        }
+
         setOptions(options: string[]) {
             this.options = options.slice();
             this.selectedIndex = 0;
@@ -97,28 +104,30 @@ namespace blockMenu {
         moveSelectionVertical(up: boolean) {
             if (this.style === MenuStyle.Grid) {
                 if (up) {
-                    if (this.options && this.options.length & 1) {
-                        if (this.selectedIndex === 0) {
-                            this.setSelectedIndex(this.selectedIndex - 1)
-                        }
-                        else if (this.selectedIndex === 1) {
-                            this.setSelectedIndex(this.selectedIndex - 3)
-                        }
-                        else {
-                            this.setSelectedIndex(this.selectedIndex - 2)
-                        }
-                    }
-                    else {
-                        this.setSelectedIndex(this.selectedIndex - 2)
-                    }
+                    this.setSelectedIndex(this.selectedIndex - this.gridCol)
+                    // if (this.options && this.options.length & 1) {
+                    //     if (this.selectedIndex === 0) {
+                    //         this.setSelectedIndex(this.selectedIndex - 1)
+                    //     }
+                    //     else if (this.selectedIndex === 1) {
+                    //         this.setSelectedIndex(this.selectedIndex - 3)
+                    //     }
+                    //     else {
+                    //         this.setSelectedIndex(this.selectedIndex - 2)
+                    //     }
+                    // }
+                    // else {
+                    //     this.setSelectedIndex(this.selectedIndex - 2)
+                    // }
                 }
                 else {
-                    if (this.options && this.options.length & 1 && this.selectedIndex >= this.options.length - 2) {
-                        this.setSelectedIndex(this.selectedIndex + 1)
-                    }
-                    else {
-                        this.setSelectedIndex(this.selectedIndex + 2)
-                    }
+                    this.setSelectedIndex(this.selectedIndex + this.gridCol)
+                    // if (this.options && this.options.length & 1 && this.selectedIndex >= this.options.length - 2) {
+                    //     this.setSelectedIndex(this.selectedIndex + 1)
+                    // }
+                    // else {
+                    //     this.setSelectedIndex(this.selectedIndex + 2)
+                    // }
                 }
             }
             else {
@@ -133,7 +142,7 @@ namespace blockMenu {
 
         moveSelectionHorizontal(left: boolean) {
             if (this.style === MenuStyle.Grid) {
-                if (this.selectedIndex % 2 === 0) {
+                if (!left) {
                     this.setSelectedIndex(this.selectedIndex + 1);
                 }
                 else {
@@ -195,7 +204,7 @@ namespace blockMenu {
 
         protected getMaxLabelWidth() {
             if (this.style === MenuStyle.Grid) {
-                return (this.metrics.width - (this.padding * 3)) >> 1;
+                return (this.metrics.width - this.padding) / this.gridCol - this.padding;
             }
             return this.metrics.width - (this.padding << 1);
         }
@@ -230,7 +239,7 @@ namespace blockMenu {
                     current.draw(left, top, this.foreground);
                 }
 
-                if (i % 2 === 1) {
+                if ((i+1) % this.gridCol === 0) {
                     left = this.metrics.left + this.padding;
                     top += current.font.charHeight + this.padding;
                 }
