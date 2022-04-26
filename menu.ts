@@ -40,12 +40,13 @@ namespace blockMenu {
         }
 
         //aqee
-        protected gridCol=4
+        protected gridCol=1
 
         setGridCol(col:number){
-            if(col<2)col=2
-            this.gridCol=col
-            this.recreateLabels();
+            if(this.style==MenuStyle.Grid&&col!=this.gridCol){
+                this.gridCol= Math.min(2, col)
+                this.recreateLabels();
+            }
         }
 
         protected iconPadding=1
@@ -340,7 +341,7 @@ namespace blockMenu {
         draw(left: number, top: number, color: number) {
             //aqee
             if(this.icon){
-                screen.drawImage(this.icon, left + this.iconPadding,top)
+                screen.drawTransparentImage(this.icon, left + this.iconPadding,top)
                 left += this.icon.width + this.iconPadding*2
             }
 

@@ -64,7 +64,7 @@ namespace blockMenu {
                     debounce = 100;
                 }
 
-                if (controller.A.isPressed()) {
+                if (controller.A.isPressed() && state.menu.isOpen()) {
                     for (const handler of state.handlers) {
                         handler(state.menu.selectedMenuOption(), state.menu.selectedMenuIndex());
                     }
