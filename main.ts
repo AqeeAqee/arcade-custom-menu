@@ -10,8 +10,8 @@ function showMenu1(){
         "goodbye",
         "hello",
         "goodbye",
-    ], MenuStyle.Grid, MenuLocation.FullScreen)
-    blockMenu.setGridColumn(3)
+    ],4, MenuLocation.BottomHalf)
+    blockMenu.setGridColumn(5)
 
     blockMenu.setIcons([
         sprites.builtin.forestTiles1,
@@ -32,8 +32,7 @@ function showMenu2() {
         "5",
         "6",
         "7",
-    ], MenuStyle.Grid, MenuLocation.FullScreen)
-    blockMenu.setGridColumn(4)
+    ], 8, MenuLocation.BottomHalf)
 
     blockMenu.setIcons([
         sprites.projectile.star1,
@@ -64,4 +63,4 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, () => {
         showMenu1()
 })
 
-game.splash("Press B to open menu")
+// game.splash("Press B to open menu")

@@ -13,7 +13,6 @@ namespace blockMenu {
     }
 
     export class MenuSprite extends sprites.BaseSprite {
-        style: MenuStyle;
         protected location: MenuLocation;
 
         protected options: string[];
@@ -32,7 +31,6 @@ namespace blockMenu {
         constructor() {
             super(100);
             this.selectedIndex = 0;
-            this.style = MenuStyle.List;
             this.setLocation(MenuLocation.Center);
             this.open = false;
             this.setColors(15, 1, 1, 3);
@@ -42,10 +40,8 @@ namespace blockMenu {
         protected gridCol=1
 
         setGridCol(col:number){
-            if(this.style==MenuStyle.Grid&&col!=this.gridCol){
-                this.gridCol= Math.max(2, col)
-                this.recreateLabels();
-            }
+            this.gridCol= Math.ceil(Math.max(1, col))
+            this.recreateLabels();
         }
 
         protected iconPadding=1
@@ -67,10 +63,6 @@ namespace blockMenu {
             this.background = Math.max(Math.min(background | 0, 15), 0);
             this.cursorForeground = Math.max(Math.min(cursorForeground | 0, 15), 0);
             this.cursorBackground = Math.max(Math.min(cursorBackground | 0, 15), 0);
-        }
-        
-        setStyle(style: MenuStyle) {
-            this.style = style;
         }
 
         setLocation(location: MenuLocation) {
@@ -112,61 +104,19 @@ namespace blockMenu {
         }
 
         moveSelectionVertical(up: boolean) {
-            if (this.style === MenuStyle.Grid) {
-                if (up) {
-                    this.setSelectedIndex(this.selectedIndex - this.gridCol)
-                    // if (this.options && this.options.length & 1) {
-                    //     if (this.selectedIndex === 0) {
-                    //         this.setSelectedIndex(this.selectedIndex - 1)
-                    //     }
-                    //     else if (this.selectedIndex === 1) {
-                    //         this.setSelectedIndex(this.selectedIndex - 3)
-                    //     }
-                    //     else {
-                    //         this.setSelectedIndex(this.selectedIndex - 2)
-                    //     }
-                    // }
-                    // else {
-                    //     this.setSelectedIndex(this.selectedIndex - 2)
-                    // }
-                }
-                else {
-                    this.setSelectedIndex(this.selectedIndex + this.gridCol)
-                    // if (this.options && this.options.length & 1 && this.selectedIndex >= this.options.length - 2) {
-                    //     this.setSelectedIndex(this.selectedIndex + 1)
-                    // }
-                    // else {
-                    //     this.setSelectedIndex(this.selectedIndex + 2)
-                    // }
-                }
-            }
-            else {
-                if (up) {
-                    this.previous()
-                }
-                else {
-                    this.next();
-                }
-            }
+            if (up)
+                this.setSelectedIndex(this.selectedIndex - this.gridCol)
+            else
+                this.setSelectedIndex(this.selectedIndex + this.gridCol)
         }
 
         moveSelectionHorizontal(left: boolean) {
-            if (this.style === MenuStyle.Grid) {
-                if (!left) {
-                    this.setSelectedIndex(this.selectedIndex + 1);
-                }
-                else {
-                    this.setSelectedIndex(this.selectedIndex - 1);
-                }
+            if (left) {
+                this.setSelectedIndex(this.selectedIndex - 1);
             }
-        }
-
-        next() {
-            this.setSelectedIndex(this.selectedIndex + 1);
-        }
-
-        previous() {
-            this.setSelectedIndex(this.selectedIndex - 1);
+            else {
+                this.setSelectedIndex(this.selectedIndex + 1);
+            }
         }
 
         setSelectedOption(option: string) {
@@ -203,20 +153,12 @@ namespace blockMenu {
                     this.background
                 );
             }
-
-            if (this.style === MenuStyle.Grid) {
-                this.drawGridMenu();
-            }
-            else {
-                this.drawListMenu();
-            }
+            
+            this.drawMenu();
         }
 
         protected getMaxLabelWidth() {
-            if (this.style === MenuStyle.Grid) {
-                return Math.idiv((this.metrics.width - this.padding) , this.gridCol) - this.padding;
-            }
-            return this.metrics.width - (this.padding << 1);
+            return Math.idiv((this.metrics.width - this.padding) , this.gridCol) - this.padding;
         }
 
         protected recreateLabels() {
@@ -233,7 +175,7 @@ namespace blockMenu {
             this.setSelectedIndex(this.selectedMenuIndex())
         }
 
-        protected drawGridMenu() {
+        protected drawMenu() {
             let current: ScrollingLabel;
 
             let top = this.metrics.top + this.padding;
@@ -260,26 +202,6 @@ namespace blockMenu {
                 else {
                     left += current.width + this.padding;
                 }
-            }
-        }
-
-        protected drawListMenu() {
-            let current: ScrollingLabel;
-
-            let top = this.metrics.top + this.padding;
-            let left = this.metrics.left + this.padding;
-
-            for (let i = 0; i < this.labels.length; i++) {
-                current = this.labels[i];
-                if (i === this.selectedIndex) {
-                    screen.fillRect(left - 1, top - 1, current.width + 2, current.font.charHeight + 2, this.cursorBackground);
-                    current.draw(left, top, this.cursorForeground);
-                }
-                else {
-                    current.draw(left, top, this.foreground);
-                }
-
-                top += current.font.charHeight + this.padding
             }
         }
     }

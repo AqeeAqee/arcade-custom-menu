@@ -57,12 +57,7 @@ namespace blockMenu {
                 controller.pauseUntilAnyButtonIsPressed();
                 if (!state.controlsEnabled) continue;
 
-                if (state.menu.style === MenuStyle.Grid) {
-                    debounce = 150
-                }
-                else {
-                    debounce = 100;
-                }
+                debounce = 150
 
                 if (controller.A.isPressed() && state.menu.isOpen()) {
                     for (const handler of state.handlers) {

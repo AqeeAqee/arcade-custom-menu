@@ -21,20 +21,18 @@ enum MenuLocation {
     TopLeft
 }
 
-enum MenuStyle {
-    //% block="grid"
-    Grid,
-    //% block="list"
-    List
-}
-
 namespace blockMenu {
 
+    //% blockId="block_menu_set_icon"
+    //% block="set icons $icons for options"
+    //% options.shadow="lists_create_with"
     export function setIcons(icons: Image[]) {
         const state = _getState();
         state.menu.setIcons(icons)
     }
 
+    //% blockId="block_menu_set_grid_col"
+    //% block="set column count $col for grid mode"
     export function setGridColumn(col:number) {
         const state = _getState();
         state.menu.setGridCol(col)
@@ -44,12 +42,12 @@ namespace blockMenu {
     //% block="show $style menu at $location with options $options"
     //% options.shadow="lists_create_with"
     //% options.defl="text"
-    export function showMenu(options: string[], style: MenuStyle, location: MenuLocation) {
+    export function showMenu(options: string[], gridCol:number , location: MenuLocation) {
         const state = _getState();
 
-        state.menu.setOptions(options);
-        state.menu.setStyle(style);
         state.menu.setLocation(location);
+        state.menu.setGridCol(gridCol)
+        state.menu.setOptions(options);
         state.menu.setMenuOpen(true);
     }
 
