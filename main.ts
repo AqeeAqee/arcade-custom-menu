@@ -64,3 +64,7 @@ controller.B.onEvent(ControllerButtonEvent.Pressed, () => {
 })
 
 // game.splash("Press B to open menu")
+
+controller.anyButton.onEvent(ControllerButtonEvent.Pressed,()=>{
+    info.changeScoreBy(1)
+})

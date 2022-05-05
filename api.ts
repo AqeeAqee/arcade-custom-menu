@@ -23,14 +23,6 @@ enum MenuLocation {
 
 namespace blockMenu {
 
-    //% blockId="block_menu_set_icon"
-    //% block="set icons $icons for options"
-    //% options.shadow="lists_create_with"
-    export function setIcons(icons: Image[]) {
-        const state = _getState();
-        state.menu.setIcons(icons)
-    }
-
     //% blockId="block_menu_set_grid_col"
     //% block="set column count $col for grid mode"
     export function setGridColumn(col:number) {
@@ -39,16 +31,27 @@ namespace blockMenu {
     }
 
     //% blockId="block_menu_show_menu"
-    //% block="show $style menu at $location with options $options"
+    //% block="show menu at $location in $gridCol columns with options $options||, with icons $icons"
+    //% gridCol.min=1 gridCol.max=15 gridCol.defl=4
     //% options.shadow="lists_create_with"
     //% options.defl="text"
-    export function showMenu(options: string[], gridCol:number , location: MenuLocation) {
+    export function showMenu(options: string[], gridCol: number, location: MenuLocation, icons?: Image[]) {
         const state = _getState();
 
         state.menu.setLocation(location);
         state.menu.setGridCol(gridCol)
         state.menu.setOptions(options);
+        if(icons)
+            state.menu.setIcons(icons)
         state.menu.setMenuOpen(true);
+    }
+
+    //% blockId="block_menu_set_icon"
+    //% block="set icons $icons for options"
+    //% options.shadow="lists_create_with"
+    export function setIcons(icons: Image[]) {
+        const state = _getState();
+        state.menu.setIcons(icons)
     }
 
     //% blockId="block_menu_close_menu"

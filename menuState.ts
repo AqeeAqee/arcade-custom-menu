@@ -55,11 +55,10 @@ namespace blockMenu {
         control.runInParallel(function() {
             while (true) {
                 controller.pauseUntilAnyButtonIsPressed();
-                if (!state.controlsEnabled) continue;
+                if (!state.controlsEnabled || !state.menu.isOpen()) continue;
 
                 debounce = 150
-
-                if (controller.A.isPressed() && state.menu.isOpen()) {
+                if (controller.A.isPressed()) {
                     for (const handler of state.handlers) {
                         handler(state.menu.selectedMenuOption(), state.menu.selectedMenuIndex());
                     }
